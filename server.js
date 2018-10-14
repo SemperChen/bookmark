@@ -2,6 +2,7 @@ let express = require('express');
 let url = require('url');
 let app = express();
 let mysql  = require('mysql');
+let bodyParser = require('body-parser');
 
 let connection = mysql.createConnection({
     host     : 'localhost',
@@ -12,9 +13,16 @@ let connection = mysql.createConnection({
 });
 
 connection.connect();
+
+app.use(bodyParser.json()); // for parsing application/json
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/login', function (req, res) {
+    let params = req.body;
+    login(params,res)
+
+})
 app.get('/login', function (req, res) {
-    // res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
-    // userDao.updateUser(connection,'菜鸟工具21','111111book2123123');
     let params = url.parse(req.url, true).query;
     login(params,res)
 
@@ -36,6 +44,10 @@ function login(params,res) {
 
     });
 }
+app.post('/register', function (req, res) {
+    register(req.body,res)
+
+})
 app.get('/register', function (req, res) {
     let params = url.parse(req.url, true).query;
     register(params,res)
@@ -93,6 +105,10 @@ function saveBookmark(params,res) {
 
     });
 }
+app.post('/save', function (req, res) {
+    saveBookmark(req.body,res)
+
+})
 app.get('/save', function (req, res) {
     let params = url.parse(req.url, true).query;
     saveBookmark(params,res)
