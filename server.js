@@ -3,6 +3,7 @@ let url = require('url');
 let app = express();
 let mysql  = require('mysql');
 let bodyParser = require('body-parser');
+const path = require('path')
 
 let connection = mysql.createConnection({
     host     : 'localhost',
@@ -16,6 +17,7 @@ connection.connect();
 
 app.use(bodyParser.json()); // for parsing application/json
 // app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.post('/login', function (req, res) {
     let params = req.body;
