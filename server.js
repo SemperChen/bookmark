@@ -119,6 +119,7 @@ function saveViewersCount(params, res) {
             let modSql = 'UPDATE videos SET viewersCount=? WHERE id = ?';
             let count = result[0].viewersCount + 1;
             let modSqlParams = [count, params.id];
+            console.log('modSqlParams',modSqlParams)
             //改
             connection.query(modSql, modSqlParams, function (err, result) {
                 if (err) {
@@ -140,26 +141,7 @@ app.post('/saveViewersCount', function (req, res) {
 })
 
 app.get('/data', function (req, res) {
-    let sql = 'SELECT * FROM videos';
-//查
-    connection.query(sql, function (err, result) {
-        if (err) {
-            // console.log('[SELECT ERROR] - ',err.message);
-            // return;
-        }
-        // console.log('result',result,'err',err,);
-        if (result.length > 0) {
-            res.send(result);
-        } else {
-            res.send([]);
-        }
-
-    });
-
-})
-
-app.get('/data/sortby', function (req, res) {
-    let sql = 'SELECT * FROM videos';
+    let sql = 'SELECT * FROM videos ORDER BY viewersCount DESC';
 //查
     connection.query(sql, function (err, result) {
         if (err) {
